@@ -28,6 +28,10 @@ jobs:
       with:
         path: ~/.cache/ms-playwright/
         key: ${{ runner.os }}-playwright
+    - name: Install apt stuff
+      run: |
+        apt-get update
+        apt-get install -y libnspr4 libnss3 libatk1.0-0t64 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libxkbcommon0 libatk-bridge2.0-0t64 libatspi2.0-0t64 libasound2t64 libcups2t64
     - name: Install dependencies
       run: |
         pip install shot-scraper
@@ -42,6 +46,7 @@ jobs:
         }" --bypass-csp | jq . > outages.json
     - name: Commit and push if it changed
       run: |-
+        cat outages.json
         git config user.name "Automated"
         git config user.email "actions@users.noreply.github.com"
         git add -A
