@@ -6,6 +6,9 @@ on:
   # schedule:
     # - cron:  '6,26,46 * * * *'
 
+permissions:
+  contents: write
+
 jobs:
   shot-scraper:
     runs-on: ubuntu-latest
@@ -36,7 +39,7 @@ jobs:
           const response = await fetch('https://power.northernpowergrid.com/Powercut_API/rest/powercuts/getall');
           const result = await response.json();
           return result;
-        }" | jq . > outages.json
+        }" --bypass-csp | jq . > outages.json
     - name: Commit and push if it changed
       run: |-
         git config user.name "Automated"
